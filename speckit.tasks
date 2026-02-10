@@ -7,9 +7,9 @@
 - [ ] Set up Git hooks (lint/test) and CI pipeline
 
 ## 2. Database & Migrations (MySQL)
-- [ ] Define schema for users, projects, progress_entries, tags, project_tags
-- [ ] Create migrations and seed scripts
-- [ ] Add indexes and constraints (unique tag per user, FK constraints)
+- [x] Define schema for users, projects, progress_entries, tags, project_tags
+- [x] Create migrations and seed scripts
+- [x] Add indexes and constraints (unique tag per user, FK constraints)
 
 ## 3. Backend (Node.js + Express)
 ### Auth
