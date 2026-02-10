@@ -16,7 +16,6 @@
 - [ ] Implement signup (hash password)
 - [ ] Implement login (JWT + httpOnly cookie)
 - [ ] Implement logout
-- [ ] Implement password reset flow
 
 ### Projects
 - [ ] Create project (with soft delete support)
