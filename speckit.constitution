@@ -1,0 +1,204 @@
+# Sewing Tracker - Specification Constitution
+
+## Declaration of Engineering Principles
+
+This constitution establishes the foundational principles governing the development of the Sewing Tracker project. All team members, contributors, and stakeholders commit to upholding these standards in their work.
+
+---
+
+## 1. Code Quality Principles
+
+### 1.1 Code Readability
+- **Clarity over cleverness**: Write code that is immediately understandable to other developers
+- **Meaningful naming**: Use descriptive names for variables, functions, classes, and modules
+- **Comment discipline**: Provide context for complex logic, algorithms, and non-obvious decisions
+- **Consistent formatting**: Enforce standardized code style through automated tooling (Prettier, ESLint, etc.)
+
+### 1.2 Code Architecture
+- **Single Responsibility Principle**: Each module, class, and function should have one clear purpose
+- **DRY (Don't Repeat Yourself)**: Eliminate code duplication through proper abstraction
+- **Loose Coupling**: Minimize dependencies between components to improve maintainability
+- **High Cohesion**: Group related functionality together
+
+### 1.3 Code Reviews
+- **Mandatory peer review**: All code changes require approval before merging
+- **Constructive feedback**: Focus on the code, not the person; provide actionable suggestions
+- **Knowledge sharing**: Use reviews as opportunities to transfer knowledge across the team
+- **Approval criteria**: Code must pass automated checks, maintain coverage, and align with architectural decisions
+
+### 1.4 Technical Debt Management
+- **Deliberate decisions**: Technical debt should be conscious and documented, not accidental
+- **Regular refactoring**: Allocate time each sprint for code improvements and cleanup
+- **Dependency updates**: Keep libraries and frameworks current with security patches and improvements
+- **Legacy code**: Plan migrations for deprecated patterns and outdated implementations
+
+---
+
+## 2. Testing Standards
+
+### 2.1 Test Coverage Requirements
+- **Minimum 80% code coverage**: All features and critical paths must have testing
+- **Unit tests for business logic**: Test individual functions, methods, and classes in isolation
+- **Integration tests for workflows**: Verify that components work together correctly
+- **E2E tests for critical user flows**: Validate complete user journeys from start to finish
+
+### 2.2 Test Quality
+- **Clear test naming**: Test names should describe what is being tested and the expected outcome
+- **Arrange-Act-Assert pattern**: Structure tests with clear setup, execution, and verification phases
+- **Fast feedback**: Unit tests should execute in milliseconds; CI/CD pipelines in minutes
+- **No flaky tests**: Tests must be deterministic and reliable; remove tests with intermittent failures
+- **Meaningful assertions**: Verify specific behavior, not just that code runs without errors
+
+### 2.3 Test Types and Responsibilities
+- **Unit tests**: Cover individual functions and components (Jest, Vitest)
+- **Integration tests**: Verify API endpoints and component interactions
+- **Snapshot tests**: Use for UI components; review changes carefully before approval
+- **Performance tests**: Monitor critical paths for regressions
+- **Security tests**: Test against common vulnerabilities (SQL injection, XSS, CSRF)
+
+### 2.4 Test Maintenance
+- **Keep tests updated**: Refactor tests alongside production code changes
+- **Avoid testing implementation details**: Focus on user-facing behavior and contracts
+- **Mock external dependencies**: Isolate units under test from external systems
+- **Continuous monitoring**: Track coverage metrics and address declining coverage
+
+---
+
+## 3. User Experience Consistency
+
+### 3.1 Design System Adherence
+- **Component library**: Use established, well-documented components for all UI elements
+- **Consistent styling**: Enforce brand colors, typography, spacing, and imagery
+- **Accessibility first**: All interfaces must meet WCAG 2.1 AA standards minimum
+- **Responsive design**: Support mobile, tablet, and desktop experiences seamlessly
+
+### 3.2 User Interface Standards
+- **Visual hierarchy**: Establish clear relationships between elements through size, color, and spacing
+- **State representation**: Clearly indicate loading, success, error, and empty states
+- **Feedback mechanisms**: Provide immediate visual feedback for all user interactions
+- **Consistent language**: Use clear, simple, and consistent terminology throughout the application
+- **Predictable behavior**: Patterns used once should behave identically when used elsewhere
+
+### 3.3 User Feedback and Validation
+- **Input validation**: Provide real-time feedback on form inputs; explain specific validation errors
+- **Error recovery**: Design user interfaces that allow users to recover from errors easily
+- **Progressive disclosure**: Show complexity only when needed; keep interfaces simple by default
+- **User education**: Provide tooltips, help text, and documentation for non-obvious features
+
+### 3.4 Performance UX
+- **Perceived performance**: Use loading states, skeletons, and optimistic updates to feel fast
+- **Responsiveness**: Aim for 100ms feedback time for interactive elements
+- **No blocking operations**: Never freeze the UI; use background tasks and async operations
+- **Graceful degradation**: Provide fallbacks when features are unavailable or slow
+
+### 3.5 Consistency Across Platforms
+- **Platform conventions**: Respect operating system and platform UI conventions
+- **Cross-platform testing**: Validate UX on target platforms before release
+- **Feature parity**: Maintain consistent core functionality across all platforms
+- **Localization readiness**: Design UI to accommodate different text lengths and writing systems
+
+---
+
+## 4. Performance Requirements
+
+### 4.1 Performance Targets
+- **Initial load time**:
+  - First Contentful Paint (FCP): < 1.5 seconds
+  - Largest Contentful Paint (LCP): < 2.5 seconds
+  - Time to Interactive (TTI): < 3.5 seconds
+- **Runtime performance**:
+  - Frame rate: 60 FPS for scroll and animations (16ms per frame)
+  - Interaction response: < 100ms for user interactions
+  - Network requests: Optimized and cached appropriately
+- **Data handling**:
+  - List rendering: Support 1000+ items with virtualization
+  - Data updates: Batch and debounce to minimize re-renders
+
+### 4.2 Bundle Size and Assets
+- **JavaScript bundle**: Track and optimize bundle size
+  - Initial bundle: < 250 KB (gzipped)
+  - Lazy-loaded chunks: Code-split for routes and features
+- **Images and media**:
+  - Use responsive images with srcset
+  - Compress with appropriate formats (WebP with fallbacks)
+  - Lazy load images below the fold
+- **CSS optimization**:
+  - Inline critical CSS
+  - Strip unused CSS from builds
+  - Minimize paint and layout thrashing
+
+### 4.3 Network and Caching
+- **API efficiency**:
+  - Minimize API requests through batching and query optimization
+  - Implement compression (gzip/brotli) on responses
+  - Use HTTP caching headers appropriately
+- **Client-side caching**:
+  - Cache API responses with appropriate TTL
+  - Cache static assets with long expiration
+  - Implement service workers for offline capability
+- **Database optimization**:
+  - Use indexes on frequently queried fields
+  - Implement pagination for large datasets
+  - Cache computed results appropriately
+
+### 4.4 Resource Consumption
+- **Memory usage**:
+  - Profile and monitor memory leaks
+  - Clean up event listeners and subscriptions
+  - Avoid memory-intensive operations on low-end devices
+- **CPU usage**:
+  - Minimize main thread blocking
+  - Use Web Workers for heavy computation
+  - Profile and optimize hot paths
+- **Battery and bandwidth** (mobile):
+  - Minimize network requests and data transfer
+  - Use efficient serialization formats
+  - Respect user's data saver preferences
+
+### 4.5 Monitoring and Observability
+- **Real User Monitoring (RUM)**:
+  - Track Core Web Vitals in production
+  - Monitor API response times and error rates
+  - Set up alerts for performance regressions
+- **Performance budgets**:
+  - Establish budgets for bundle size, load time, and runtime performance
+  - Enforce budgets in CI/CD pipeline
+  - Review and adjust budgets quarterly
+- **Continuous profiling**:
+  - Use automated tools to catch performance issues early
+  - Profile on target devices and network conditions
+  - Document and track performance improvements
+
+---
+
+## 5. Enforcement and Governance
+
+### 5.1 Automation
+- **Pre-commit hooks**: Lint and format code before commits
+- **CI/CD pipeline**: Run tests, coverage checks, and performance audits automatically
+- **Automated enforcement**: Block merges that violate these principles
+- **Dependency scanning**: Detect security vulnerabilities and outdated packages
+
+### 5.2 Documentation
+- **Architecture decision records**: Document why major decisions were made
+- **API documentation**: Keep specs current and accessible
+- **Runbooks and guides**: Provide clear instructions for common development tasks
+- **Code comments**: Explain the "why" for non-obvious business logic
+
+### 5.3 Review and Adaptation
+- **Regular retrospectives**: Review these principles quarterly
+- **Metrics tracking**: Monitor adherence to standards through metrics
+- **Feedback loops**: Gather team feedback on what works and what needs adjustment
+- **Evolution**: Update principles as the project matures and learns
+
+---
+
+## 6. Commitment
+
+All contributors to the Sewing Tracker project pledge to uphold these principles. We recognize that perfect adherence is impossible, but these standards provide our north star. We commit to continuous improvement, supporting each other in maintaining high quality, and making this a project we're proud of.
+
+---
+
+**Document Version**: 1.0
+**Last Updated**: February 2026
+**Status**: Active

@@ -1,0 +1,242 @@
+# Sewing Tracker - Detailed Project Specification
+
+## 1. Overview
+
+Build a web application that allows users to create, track, and manage sewing projects. The application includes authentication, CRUD for projects, and tagging for organization and discovery.
+
+### 1.1 Goals
+- Enable authenticated users to create and track sewing projects.
+- Provide structured project data and progress tracking.
+- Support tags for filtering and organization.
+
+### 1.2 Non-Goals
+- Real-time collaboration (out of scope for v1).
+- Inventory management for materials (may be considered later).
+- Marketplace or social feed features.
+
+---
+
+## 2. Functional Requirements
+
+### 2.1 Authentication
+- Users can sign up with email and password.
+- Users can sign in and sign out.
+- Password reset flow via email.
+- Auth session persists across refresh and expires after inactivity timeout.
+
+### 2.2 Sewing Projects (CRUD)
+- Users can create a project with:
+  - Title (required)
+  - Description
+  - Pattern source (optional)
+  - Fabric details (optional)
+  - Status (planned, in_progress, complete, archived)
+  - Start date and target completion date (optional)
+- Users can view a list of their projects.
+- Users can view a single project detail page.
+- Users can edit their own projects.
+- Users can delete their own projects (soft delete preferred).
+
+### 2.3 Progress Tracking
+- Users can record progress updates with date and notes.
+- Projects show a timeline of progress entries.
+- Last updated timestamp is shown on project list.
+
+### 2.4 Tagging
+- Users can create tags.
+- Users can assign multiple tags to a project.
+- Users can filter projects by tag.
+- Tags are unique per user and case-insensitive.
+
+### 2.5 Search and Sorting
+- Search projects by title and description.
+- Sort by updated_at, created_at, status, or target date.
+- Filter by status and tags.
+
+---
+
+## 3. User Stories
+
+### 3.1 Authentication
+- As a new user, I want to create an account so I can save my sewing projects.
+- As a returning user, I want to sign in so I can view my projects.
+- As a user, I want to reset my password if I forget it.
+
+### 3.2 Project Management
+- As a user, I want to create a project so I can track it.
+- As a user, I want to edit project details as plans change.
+- As a user, I want to delete a project when I no longer need it.
+
+### 3.3 Progress Tracking
+- As a user, I want to log progress updates to track my work over time.
+- As a user, I want to see a timeline of updates for each project.
+
+### 3.4 Tagging
+- As a user, I want to tag projects so I can organize them.
+- As a user, I want to filter projects by tag to find them quickly.
+
+---
+
+## 4. UX and UI Requirements
+
+### 4.1 Core Screens
+- Landing page with sign-in CTA.
+- Auth pages: sign up, sign in, password reset.
+- Dashboard:
+  - List of projects with status, tags, last updated
+  - Search and filters
+- Project detail page:
+  - Project summary
+  - Progress timeline
+  - Edit and delete actions
+- Project editor:
+  - Create/edit form
+  - Tag selector
+
+### 4.2 UX Requirements
+- Fast feedback for save actions (optimistic save where possible).
+- Confirm before deleting a project.
+- Clear empty states for new users.
+- Accessibility: WCAG 2.1 AA.
+- Responsive layout for mobile and desktop.
+
+---
+
+## 5. Data Model
+
+### 5.1 Entities
+
+#### User
+- id (uuid)
+- email (string, unique)
+- password_hash (string)
+- created_at (timestamp)
+- updated_at (timestamp)
+
+#### Project
+- id (uuid)
+- owner_id (uuid, FK User)
+- title (string)
+- description (text)
+- pattern_source (string)
+- fabric_details (string)
+- status (enum: planned, in_progress, complete, archived)
+- start_date (date)
+- target_date (date)
+- created_at (timestamp)
+- updated_at (timestamp)
+- deleted_at (timestamp, nullable)
+
+#### ProgressEntry
+- id (uuid)
+- project_id (uuid, FK Project)
+- entry_date (date)
+- notes (text)
+- created_at (timestamp)
+- updated_at (timestamp)
+
+#### Tag
+- id (uuid)
+- owner_id (uuid, FK User)
+- name (string)
+- created_at (timestamp)
+- updated_at (timestamp)
+
+#### ProjectTag
+- id (uuid)
+- project_id (uuid, FK Project)
+- tag_id (uuid, FK Tag)
+
+---
+
+## 6. API Requirements
+
+### 6.1 Auth
+- POST /api/auth/signup
+- POST /api/auth/login
+- POST /api/auth/logout
+- POST /api/auth/reset-password
+
+### 6.2 Projects
+- GET /api/projects
+- POST /api/projects
+- GET /api/projects/:id
+- PUT /api/projects/:id
+- DELETE /api/projects/:id
+
+### 6.3 Progress
+- GET /api/projects/:id/progress
+- POST /api/projects/:id/progress
+- PUT /api/projects/:id/progress/:entryId
+- DELETE /api/projects/:id/progress/:entryId
+
+### 6.4 Tags
+- GET /api/tags
+- POST /api/tags
+- PUT /api/tags/:id
+- DELETE /api/tags/:id
+- GET /api/projects?tag=:tagId
+
+### 6.5 Search
+- GET /api/projects/search?q=...
+
+---
+
+## 7. Security Requirements
+
+- Store passwords using a strong hash (bcrypt or argon2).
+- Enforce access control: only owners can access their projects.
+- Prevent IDOR by validating project ownership.
+- Rate limit auth endpoints.
+- Use HTTPS only.
+- Protect against XSS and CSRF.
+
+---
+
+## 8. Performance Requirements
+
+- Dashboard loads in under 2.5 seconds on standard broadband.
+- Search results returned within 500ms for typical datasets.
+- Project save operations return in under 300ms average.
+- Support 5k projects per user with pagination and indexed search.
+
+---
+
+## 9. Testing Requirements
+
+- Unit tests for auth logic, project operations, and tag handling.
+- Integration tests for API endpoints.
+- E2E tests for core flows: sign up, create project, add tag, log progress.
+- Minimum 80% code coverage on core logic.
+
+---
+
+## 10. Observability
+
+- Log auth events (sign in, sign out, password reset).
+- Log project create/update/delete events.
+- Monitor error rates and API latency.
+- Alerts for elevated auth failures or unauthorized access attempts.
+
+---
+
+## 11. Rollout and Milestones
+
+### 11.1 MVP
+- Auth (signup/login/logout/reset)
+- Project CRUD
+- Tagging and filtering
+- Progress entries
+
+### 11.2 V1
+- UX polish and accessibility
+- Performance optimizations
+- Reporting for project completion stats
+
+---
+
+## 12. Open Questions
+
+- Should projects support photo uploads in v1?
+- Should tags be global per user or per project?
+- Should progress entries support attachments?
