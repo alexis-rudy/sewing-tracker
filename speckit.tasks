@@ -1,0 +1,84 @@
+# Sewing Tracker - Task List
+
+## 1. Repo & Tooling
+- [ ] Initialize repo structure (`client/`, `server/`)
+- [ ] Add README, license, and contribution guidelines
+- [ ] Configure ESLint + Prettier for client and server
+- [ ] Set up Git hooks (lint/test) and CI pipeline
+
+## 2. Database & Migrations (MySQL)
+- [ ] Define schema for users, projects, progress_entries, tags, project_tags
+- [ ] Create migrations and seed scripts
+- [ ] Add indexes and constraints (unique tag per user, FK constraints)
+
+## 3. Backend (Node.js + Express)
+### Auth
+- [ ] Implement signup (hash password)
+- [ ] Implement login (JWT + httpOnly cookie)
+- [ ] Implement logout
+- [ ] Implement password reset flow
+
+### Projects
+- [ ] Create project (with soft delete support)
+- [ ] List projects (pagination, search, filter, sort)
+- [ ] Get single project (ownership checks)
+- [ ] Update project
+- [ ] Soft delete project
+
+### Progress
+- [ ] Add progress entry
+- [ ] List progress entries by project
+- [ ] Update progress entry
+- [ ] Delete progress entry
+
+### Tags
+- [ ] Create tag (case-insensitive uniqueness per user)
+- [ ] List tags
+- [ ] Update tag
+- [ ] Delete tag
+- [ ] Assign/unassign tags to projects
+
+### Cross-cutting
+- [ ] Request validation (Zod/Joi)
+- [ ] Centralized error handling
+- [ ] Rate limiting for auth endpoints
+- [ ] Logging and audit for auth + project changes
+
+## 4. Frontend (React)
+### Auth
+- [ ] Sign up page
+- [ ] Sign in page
+- [ ] Password reset page
+- [ ] Auth state management
+
+### Dashboard
+- [ ] Project list view
+- [ ] Search, filter, sort UI
+- [ ] Empty states + loading states
+
+### Project
+- [ ] Project detail page
+- [ ] Create/edit project form
+- [ ] Delete confirmation modal
+- [ ] Progress timeline UI
+- [ ] Tag picker UI
+
+## 5. Testing
+- [ ] Backend unit tests (services + utils)
+- [ ] Backend integration tests (API)
+- [ ] Frontend unit tests (components)
+- [ ] E2E tests (core user flows)
+- [ ] Coverage threshold enforcement (80%+)
+
+## 6. Performance & Security
+- [ ] Add pagination to project list
+- [ ] Optimize DB queries (indexes, query plans)
+- [ ] CSRF protection and HTTPS-only config
+- [ ] Secure password hashing (bcrypt/argon2)
+
+## 7. Deployment & Ops
+- [ ] Configure environment variables
+- [ ] Deploy backend
+- [ ] Deploy frontend
+- [ ] Set up monitoring and alerts
+- [ ] Run smoke tests post-deploy
