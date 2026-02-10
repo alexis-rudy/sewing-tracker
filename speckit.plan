@@ -1,0 +1,70 @@
+# Sewing Tracker - Implementation Plan (React + Express + MySQL)
+
+## 1. Project Setup
+- Initialize mono-repo or two folders: `client/` (React) and `server/` (Express).
+- Configure shared `.env` templates for API base URL and DB credentials.
+- Add linting/formatting (ESLint + Prettier) for both client and server.
+- Set up Git hooks (lint + test) and CI pipeline.
+
+## 2. Database Design (MySQL)
+- Create schema and migrations:
+  - `users` (id, email, password_hash)
+  - `projects` (id, owner_id, title, description, pattern_source, fabric_details, status, start_date, target_date, created_at, updated_at, deleted_at)
+  - `progress_entries` (id, project_id, entry_date, notes, created_at, updated_at)
+  - `tags` (id, owner_id, name, created_at, updated_at)
+  - `project_tags` (id, project_id, tag_id)
+- Add indexes:
+  - `projects.owner_id`, `projects.updated_at`, `projects.status`
+  - `tags.owner_id`, unique composite index on (`owner_id`, `name`)
+  - `project_tags.project_id`, `project_tags.tag_id`
+- Implement migrations using Knex or Sequelize.
+
+## 3. Backend (Node.js + Express)
+### 3.1 Core Setup
+- Express app with modular routers: `auth`, `projects`, `progress`, `tags`.
+- Middleware: body parsing, CORS, rate limiting, request validation.
+- Auth: JWT-based sessions + secure HTTP-only cookies.
+
+### 3.2 API Endpoints
+- Auth: `POST /api/auth/signup`, `POST /api/auth/login`, `POST /api/auth/logout`, `POST /api/auth/reset-password`
+- Projects: CRUD + soft delete + pagination + search + filtering
+- Progress: CRUD scoped to project ownership
+- Tags: CRUD + assign/unassign tags
+
+### 3.3 Validation & Error Handling
+- Standard error responses (400, 401, 403, 404, 500).
+- Centralized error middleware.
+
+## 4. Frontend (React)
+### 4.1 Core Setup
+- React app with TypeScript.
+- Routing with React Router.
+- State: React Query for server state, Zustand or Context for auth state.
+- UI: Tailwind or equivalent.
+
+### 4.2 Screens
+- Auth: Sign up, Sign in, Reset password
+- Dashboard: project list, search, filter, sort
+- Project detail: summary + progress timeline
+- Project editor: create/edit form with tag picker
+
+### 4.3 UX Requirements
+- Optimistic updates for create/edit.
+- Confirm modals for delete.
+- Empty states and loading skeletons.
+- Accessibility (WCAG 2.1 AA).
+
+## 5. Testing Strategy
+- Backend: Jest + Supertest (unit + integration).
+- Frontend: Vitest + React Testing Library.
+- E2E: Playwright for core flows.
+- Enforce 80% coverage on core logic.
+
+## 6. Performance & Security
+- Add pagination and indexed search on projects.
+
+## 7. Observability
+- Log auth events and project CRUD.
+- Track API latency and error rates.
+
+
